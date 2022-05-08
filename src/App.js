@@ -1,11 +1,10 @@
 import logo from './logo.svg';
 import './App.scss';
+import Game from './components/game/Game';
 
 function App() {
   return (
-    <div className="App">
-      Worlde Project
-    </div>
+    <Game />
   );
 }
 

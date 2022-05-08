@@ -1,0 +1,12 @@
+.Tile {
+    width: 62px;
+    height: 62px;
+    border: 2px solid #d3d6da;
+    box-sizing: border-box;
+    margin-right: 5px;
+    margin-bottom: 5px;
+
+    &:first-child {
+        margin-left: 5px;
+    }
+}
