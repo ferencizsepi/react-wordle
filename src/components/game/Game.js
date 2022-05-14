@@ -4,6 +4,9 @@ import Tile from '../tile/Tile';
 import styles from './Game.module.scss';
 import useEventListener from '../../hooks/useEventListener';
 
+// TODO just for testing
+const SOLUTION = 'KUTYA';
+
 const VALID_KEYS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'
 ];
@@ -18,13 +21,27 @@ const Game = () => {
 
     const [selectedKey, setSelectedKey] = useState('');
     const [activeRow, setActiveRow] = useState(0);
+    const [message, setMessage] = useState({ text: '', type: '' });
 
     const keyHandler = ({ key }) => {
         if (key && VALID_KEYS.includes(String(key).toUpperCase())) {
             console.log(key.toUpperCase());
             setSelectedKey(key.toUpperCase());
+            setMessage({text: '', type: ''})
         } else if (key && key === 'Backspace') {
             deleteLetter();
+            setMessage({text: '', type: ''})
+        } else if (key && key === 'Enter') {
+            onEnterPressed();
+        }
+    };
+
+    const onEnterPressed = () => {
+        const row = getSelectedRow();
+        if (row.activeLetterIndex < 5) {
+            setMessage({ text: 'Not enough letters', type: 'WARNING' });
+        } else {
+            alert('Check solution');
         }
     };
 
@@ -35,28 +52,28 @@ const Game = () => {
         if (activeLetterIndex > 0) {
             let updatedLetters = [...row.letters];
             updatedLetters[activeLetterIndex - 1] = '';
-            const updatedIndex = row.activeLetterIndex -1;
+            const updatedIndex = row.activeLetterIndex - 1;
             let updatedRow = { ...row, activeLetterIndex: updatedIndex, letters: updatedLetters };
             if (activeRow === 0) {
-                setRow1(updatedRow)
+                setRow1(updatedRow);
             }
             if (activeRow === 1) {
-                setRow2(updatedRow)
+                setRow2(updatedRow);
             }
             if (activeRow === 2) {
-                setRow3(updatedRow)
+                setRow3(updatedRow);
             }
             if (activeRow === 3) {
-                setRow4(updatedRow)
+                setRow4(updatedRow);
             }
             if (activeRow === 4) {
-                setRow5(updatedRow)
+                setRow5(updatedRow);
             }
             if (activeRow === 5) {
-                setRow6(updatedRow)
+                setRow6(updatedRow);
             }
         }
-    }
+    };
 
     // TODO find better solution
     const getSelectedRow = () => {
@@ -90,6 +107,7 @@ const Game = () => {
                     const updatedIndex = row.activeLetterIndex + 1;
                     let updatedRow1 = { ...row, activeLetterIndex: updatedIndex, letters: updatedLetters };
                     setRow1(updatedRow1);
+                    setSelectedKey('');
                 }
 
             }
@@ -97,45 +115,57 @@ const Game = () => {
         [selectedKey]
     );
 
+    const getMessageStyles = () => {
+        if (message && message.type === 'WARNING') {
+            return [styles.Message, styles.Warning].join(' ');
+        }
+        return styles.Message;
+    };
+
     useEventListener('keydown', keyHandler);
 
     return (
         <div className={styles.Game}>
-            {/*Row 1*/}
-            <div className={styles.Row}>
-                {row1.letters.map((letter, index) => (
-                    <Tile key={10 + index} letter={letter}/>
-                ))}
+            <div className={getMessageStyles()}>
+                {message.text}
             </div>
-            {/*Row 2*/}
-            <div className={styles.Row}>
-                {row2.letters.map((letter, index) => (
-                    <Tile key={20 + index} letter={letter}/>
-                ))}
-            </div>
-            {/*Row 3*/}
-            <div className={styles.Row}>
-                {row3.letters.map((letter, index) => (
-                    <Tile key={30 + index} letter={letter}/>
-                ))}
-            </div>
-            {/*Row 4*/}
-            <div className={styles.Row}>
-                {row4.letters.map((letter, index) => (
-                    <Tile key={40 + index} letter={letter}/>
-                ))}
-            </div>
-            {/*Row 5*/}
-            <div className={styles.Row}>
-                {row5.letters.map((letter, index) => (
-                    <Tile key={50 + index} letter={letter}/>
-                ))}
-            </div>
-            {/*Row 6*/}
-            <div className={styles.Row}>
-                {row6.letters.map((letter, index) => (
-                    <Tile key={60 + index} letter={letter}/>
-                ))}
+            <div>
+                {/*Row 1*/}
+                <div className={styles.Row}>
+                    {row1.letters.map((letter, index) => (
+                        <Tile key={10 + index} letter={letter}/>
+                    ))}
+                </div>
+                {/*Row 2*/}
+                <div className={styles.Row}>
+                    {row2.letters.map((letter, index) => (
+                        <Tile key={20 + index} letter={letter}/>
+                    ))}
+                </div>
+                {/*Row 3*/}
+                <div className={styles.Row}>
+                    {row3.letters.map((letter, index) => (
+                        <Tile key={30 + index} letter={letter}/>
+                    ))}
+                </div>
+                {/*Row 4*/}
+                <div className={styles.Row}>
+                    {row4.letters.map((letter, index) => (
+                        <Tile key={40 + index} letter={letter}/>
+                    ))}
+                </div>
+                {/*Row 5*/}
+                <div className={styles.Row}>
+                    {row5.letters.map((letter, index) => (
+                        <Tile key={50 + index} letter={letter}/>
+                    ))}
+                </div>
+                {/*Row 6*/}
+                <div className={styles.Row}>
+                    {row6.letters.map((letter, index) => (
+                        <Tile key={60 + index} letter={letter}/>
+                    ))}
+                </div>
             </div>
         </div>
     );

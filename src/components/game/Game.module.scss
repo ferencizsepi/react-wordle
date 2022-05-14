@@ -1,8 +1,22 @@
 .Game {
     margin: auto;
-    width: 50%;
+    width: min-content;
 }
 
 .Row {
-    display: flex;
+    display: inline-flex;
+}
+
+.Message {
+    margin: 25px 65px;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.Warning {
+    background: black;
+    color: white;
 }
