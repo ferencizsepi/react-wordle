@@ -23,17 +23,75 @@ const Game = () => {
         if (key && VALID_KEYS.includes(String(key).toUpperCase())) {
             console.log(key.toUpperCase());
             setSelectedKey(key.toUpperCase());
+        } else if (key && key === 'Backspace') {
+            deleteLetter();
+        }
+    };
+
+    // TODO find better solution
+    const deleteLetter = () => {
+        const row = getSelectedRow();
+        const activeLetterIndex = row.activeLetterIndex;
+        if (activeLetterIndex > 0) {
+            let updatedLetters = [...row.letters];
+            updatedLetters[activeLetterIndex - 1] = '';
+            const updatedIndex = row.activeLetterIndex -1;
+            let updatedRow = { ...row, activeLetterIndex: updatedIndex, letters: updatedLetters };
+            if (activeRow === 0) {
+                setRow1(updatedRow)
+            }
+            if (activeRow === 1) {
+                setRow2(updatedRow)
+            }
+            if (activeRow === 2) {
+                setRow3(updatedRow)
+            }
+            if (activeRow === 3) {
+                setRow4(updatedRow)
+            }
+            if (activeRow === 4) {
+                setRow5(updatedRow)
+            }
+            if (activeRow === 5) {
+                setRow6(updatedRow)
+            }
+        }
+    }
+
+    // TODO find better solution
+    const getSelectedRow = () => {
+        if (activeRow === 0) {
+            return row1;
+        }
+        if (activeRow === 1) {
+            return row2;
+        }
+        if (activeRow === 2) {
+            return row2;
+        }
+        if (activeRow === 3) {
+            return row4;
+        }
+        if (activeRow === 4) {
+            return row5;
+        }
+        if (activeRow === 5) {
+            return row6;
         }
     };
 
     useEffect(() => {
+            const row = getSelectedRow();
             if (activeRow === 0 && selectedKey) {
-                let updatedLetters = [...row1.letters];
-                const currentLetterIndex = row1.activeLetterIndex;
-                updatedLetters[currentLetterIndex] = selectedKey;
-                const updatedIndex = row1.activeLetterIndex + 1;
-                let updatedRow1 = { ...row1, activeLetterIndex: updatedIndex, letters: updatedLetters };
-                setRow1(updatedRow1);
+                let updatedLetters = [...row.letters];
+                const currentLetterIndex = row.activeLetterIndex;
+                if (currentLetterIndex < 5) {
+                    updatedLetters[currentLetterIndex] = selectedKey;
+                    const updatedIndex = row.activeLetterIndex + 1;
+                    let updatedRow1 = { ...row, activeLetterIndex: updatedIndex, letters: updatedLetters };
+                    setRow1(updatedRow1);
+                }
+
             }
         },
         [selectedKey]
